@@ -1,0 +1,91 @@
+<h1 class="text-center mb-4">Gestiona el Stock Disponible para los Clientes</h1>
+
+<!-- Formulario para agregar productos al stock -->
+<div class="container w-50">
+  <form (ngSubmit)="crearStock()">
+    <!-- Nombre del producto -->
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre del Producto:</label>
+      <input
+        type="text"
+        [(ngModel)]="stock.nombreProducto"
+        class="form-control"
+        id="nombre"
+        name="nombre"
+        required
+      />
+    </div>
+
+    <!-- Tipo de producto (Fruta/Verdura) -->
+    <div class="mb-3">
+      <label for="tipoProducto" class="form-label">Tipo de Producto (Fruta/Verdura):</label>
+      <input
+        type="text"
+        [(ngModel)]="stock.tipoProducto"
+        class="form-control"
+        id="tipoProducto"
+        name="tipoProducto"
+        required
+      />
+    </div>
+
+    <!-- Cantidad de producto -->
+    <div class="mb-3">
+      <label for="cantidad" class="form-label">Cantidad:</label>
+      <input
+        type="number"
+        [(ngModel)]="stock.cantidadProducto"
+        class="form-control"
+        id="cantidad"
+        name="cantidad"
+        required
+      />
+    </div>
+
+    <!-- Especificación de entrega (Opcional) -->
+    <div class="mb-3">
+      <label for="especificacion" class="form-label">Especificación de Entrega (Opcional):</label>
+      <input
+        type="text"
+        [(ngModel)]="stock.especificacionEntrega"
+        class="form-control"
+        id="especificacion"
+        name="especificacion"
+      />
+    </div>
+
+    <!-- Precio de venta -->
+    <div class="mb-3">
+      <label for="precioVenta" class="form-label">Precio de Venta Público:</label>
+      <input
+        type="number"
+        [(ngModel)]="stock.precioVenta"
+        class="form-control"
+        id="precioVenta"
+        name="precioVenta"
+      />
+    </div>
+
+    
+
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" class="btn btn-success w-100">Enviar Producto</button>
+  </form>
+
+  <!-- Mostrar lista de productos disponibles en el stock -->
+  <div class="mt-4">
+    <h4>Productos en venta</h4>
+    <div *ngFor="let producto of listaStock" class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ producto.nombreProducto }} - {{ producto.tipoProducto }}</h5>
+        <p class="card-text">Precio: <strong>{{ producto.precioVenta | currency }}</strong> | Cantidad: <strong>{{ producto.cantidadProducto }}</strong></p>
+        
+        <!-- Componente de Ofertas para aplicar descuentos -->
+        <app-ofertas 
+          [producto]="producto" 
+          (descuentoAplicado)="recibirDescuentoAplicado($event)">
+        </app-ofertas>
+      </div>
+    </div>
+  </div>
+</div>

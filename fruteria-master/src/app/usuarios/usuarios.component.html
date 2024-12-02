@@ -1,0 +1,16 @@
+<div *ngFor="let usuario of usuarios" class="card mb-3" style="max-width: 540px; margin: auto;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <!-- Aquí puedes poner la foto de perfil si la tienes -->
+        <img src="{{ usuario.picture?.medium }}" class="img-fluid rounded-start" alt="Imagen de perfil">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ usuario.name.first }} {{ usuario.name.last }}</h5>
+          <p class="card-text">{{ usuario.email }}</p>
+          <p class="card-text"><strong>{{ usuario.location.city }}, {{ usuario.location.country }}</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

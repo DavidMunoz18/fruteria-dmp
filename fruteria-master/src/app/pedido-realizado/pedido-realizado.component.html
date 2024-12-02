@@ -1,0 +1,33 @@
+<h1 class="text-center mb-4">Listado de Pedidos Realizados</h1>
+
+<!-- Filtros para mostrar productos por tipo -->
+<div class="d-flex justify-content-center mb-4">
+  <button (click)="filtrarPorTipo('Fruta')" class="btn btn-primary mx-2">Fruta</button>
+  <button (click)="filtrarPorTipo('Verdura')" class="btn btn-secondary mx-2">Verdura</button>
+  <button (click)="filtrarPorTipo('')" class="btn btn-info mx-2">Mostrar Todo</button>
+</div>
+
+<!-- Listado de productos con detalles -->
+<div *ngIf="stock && stock.length > 0; else noStock">
+  <ul class="list-group">
+    <li *ngFor="let stocks of stock; let i = index" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ stocks.nombreProducto }}</strong>
+        <br />
+        <span class="badge bg-secondary">{{ stocks.tipoProducto }}</span>
+      </div>
+      <div>
+        <span>Cantidad: <strong>{{ stocks.cantidadProducto }}</strong></span>
+        <br />
+        <span>Especificación: <strong>{{ stocks.especificacionEntrega }}</strong></span>
+        <br />
+        <span class="fw-bold">Precio: <span class="text-success">{{ stocks.precioVenta | currency }}</span></span>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Mensaje cuando no hay productos en stock -->
+<ng-template #noStock>
+  <div class="alert alert-warning text-center">No hay productos en el stock.</div>
+</ng-template>

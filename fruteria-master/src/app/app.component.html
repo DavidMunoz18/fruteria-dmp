@@ -1,0 +1,72 @@
+<!-- Vista cuando no está logueado -->
+<div *ngIf="!isLoggedIn; else loggedInTemplate" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+        <form (submit)="login()">
+          <!-- Campo de correo -->
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico:</label>
+            <input
+              type="email"
+              id="email"
+              [(ngModel)]="email"
+              name="email"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <!-- Campo de contraseña -->
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña:</label>
+            <input
+              type="password"
+              id="password"
+              [(ngModel)]="password"
+              name="password"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <!-- Botón de ingreso -->
+          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Vista cuando está logueado -->
+<ng-template #loggedInTemplate>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Frutería</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+          <!-- Opciones solo visibles para admin -->
+          <li *ngIf="role === 'admin'" class="nav-item">
+            <a [routerLink]="['/stock']" routerLinkActive="active" class="nav-link">Stock</a>
+          </li>
+          <li *ngIf="role === 'admin'" class="nav-item">
+            <a [routerLink]="['/pedido']" routerLinkActive="active" class="nav-link">Pedido Realizado</a>
+          </li>
+          <li *ngIf="role === 'admin'" class="nav-item">
+            <a [routerLink]="['/usuarios']" routerLinkActive="active" class="nav-link">Usuarios Conectados</a>
+          </li>
+          <!-- Opciones visibles para todos -->
+          <li class="nav-item">
+            <a [routerLink]="['/compra']" routerLinkActive="active" class="nav-link">Compras Usuarios</a>
+          </li>
+        </ul>
+        <!-- Botón de Cerrar sesión -->
+        <button class="btn btn-danger ms-auto" (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido de la aplicación -->
+  <router-outlet></router-outlet>
+</ng-template>

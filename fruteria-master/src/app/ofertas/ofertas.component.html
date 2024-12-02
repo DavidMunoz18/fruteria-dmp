@@ -1,0 +1,20 @@
+<div *ngIf="producto">
+    <h3>Aplicar descuento a: {{ producto.nombreProducto }}</h3>
+  
+    <div>
+      <label for="descuento">Descuento:</label>
+      <input 
+        type="number" 
+        [(ngModel)]="producto.descuento" 
+        id="descuento" 
+        min="0" 
+        max="100" 
+        placeholder="Ingrese descuento (%)" 
+        class="form-control" />
+    </div>
+  
+    <button (click)="aplicarDescuento()" class="btn btn-success mt-3">
+      Aplicar descuento
+    </button>
+  </div>
+  

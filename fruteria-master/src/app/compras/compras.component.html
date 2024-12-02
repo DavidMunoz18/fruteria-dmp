@@ -1,0 +1,70 @@
+<div class="compras">
+  <h2 class="text-center mb-4">Productos Disponibles</h2>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Listado de productos disponibles -->
+    <div *ngFor="let producto of stockDisponible" class="col">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="card-title">{{ producto.nombreProducto }}</h3>
+          <p class="card-text"><strong>Tipo:</strong> {{ producto.tipoProducto }}</p>
+          <p class="card-text"><strong>Cantidad disponible:</strong> {{ producto.cantidadProducto }}</p>
+          <p class="card-text"><strong>Precio:</strong> {{ producto.precioVenta | currency }}</p>
+          
+          <p *ngIf="producto.descuento" class="text-success">
+            <strong>Descuento:</strong> {{ producto.descuento }}%
+          </p>
+          
+          <p><strong>Especificación:</strong> {{ producto.especificacionEntrega }}</p>
+
+          <!-- Botón para añadir al cesto -->
+          <button 
+            class="btn btn-primary w-100"
+            (click)="compraProducto(producto)" 
+            [disabled]="producto.cantidadProducto <= 0">
+            Añadir al Cesto
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección del cesto de compra -->
+  <h2 class="text-center mt-5 mb-4">Cesto de Compra</h2>
+
+  <div *ngIf="cesto.length > 0" class="cesto">
+    <div *ngFor="let producto of cesto" class="card mb-3">
+      <div class="card-body">
+        <p><strong>{{ producto.nombreProducto }}</strong> - {{ producto.cantidadProducto }} unidades</p>
+        <p><strong>Precio unitario:</strong> {{ producto.precioVenta | currency }}</p>
+        
+        <p *ngIf="producto.descuento">
+          <strong>Descuento aplicado:</strong> {{ producto.descuento }}%
+        </p>
+        
+        <p><strong>Subtotal:</strong> {{ (producto.precioVenta * producto.cantidadProducto) | currency }}</p>
+        
+        <!-- Botón para eliminar producto del cesto -->
+        <button class="btn btn-danger" (click)="eliminarProductoCompleto(producto)">
+          Eliminar del Cesto
+        </button>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- Total y botón para vaciar el cesto -->
+    <div class="total text-center">
+      <h3><strong>Total:</strong> {{ getTotal() | currency }}</h3>
+    </div>
+
+    <div class="text-center mt-3">
+      <button class="btn btn-warning w-100" (click)="vaciarCesto()">Vaciar Cesto</button>
+    </div>
+  </div>
+
+  <!-- Mensaje si el cesto está vacío -->
+  <div *ngIf="cesto.length === 0" class="text-center mt-4">
+    <p>Tu cesto está vacío.</p>
+  </div>
+</div>
