@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Stock } from '../modelos/stock';
 import { StockSService } from '../servicios/stock-s.service';
 import { CommonModule } from '@angular/common';
@@ -10,70 +10,79 @@ import { CommonModule } from '@angular/common';
   templateUrl: './compras.component.html',
   styleUrls: ['./compras.component.css']
 })
-export class ComprasComponent {
+export class ComprasComponent implements OnInit {
   stockDisponible: Stock[] = [];
-  cesto: Stock[] = []; // Lista para almacenar los productos añadidos al cesto
+  cesto: Stock[] = [];
 
-  constructor(private stockService: StockSService) {
-    // Obtener los productos del servicio
-    this.stockDisponible = this.stockService.getStock();
+  constructor(private stockService: StockSService) {}
 
-    // Intentar cargar el cesto desde localStorage al iniciar el componente
-    const cestoGuardado = localStorage.getItem('cesto');
-    if (cestoGuardado) {
-      this.cesto = JSON.parse(cestoGuardado);
-    }
+  ngOnInit() {
+    // Obtener el stock desde el servidor (json-server)
+    this.stockService.getStock().subscribe((data) => {
+      this.stockDisponible = data;
+    });
+
+    // Obtener el cesto desde el servidor (json-server)
+    this.stockService.getCesto().subscribe((data) => {
+      this.cesto = data;
+    });
   }
 
-  // Método para agregar el producto al cesto
   compraProducto(producto: Stock) {
     if (producto.cantidadProducto <= 0) {
       alert('No hay más unidades disponibles.');
-      return; // Si no hay unidades, no se agrega al cesto
+      return;
     }
 
-    const productoEnCesto = this.cesto.find(
-      (item) => item.nombreProducto === producto.nombreProducto
-    );
+    const productoEnCesto = this.cesto.find((item) => item.id === producto.id);
 
     if (productoEnCesto) {
       if (productoEnCesto.cantidadProducto < producto.cantidadProducto) {
         productoEnCesto.cantidadProducto += 1;
-        producto.cantidadProducto -= 1; // Reducir el stock disponible
-        this.actualizarStock(); // Actualizar stock en tiempo real
+        producto.cantidadProducto -= 1;
+        // Actualizar stock en el backend
+        this.stockService.updateStock(this.stockDisponible).subscribe();
       } else {
         alert('No hay suficientes unidades disponibles.');
       }
     } else {
-      this.cesto.push({
-        ...producto, // Copiar todas las propiedades del producto
-        cantidadProducto: 1, // Inicializamos la cantidad en 1
-      });
-      producto.cantidadProducto -= 1; // Reducir el stock disponible
-      this.actualizarStock(); // Actualizar stock en tiempo real
+      this.cesto.push({ ...producto, cantidadProducto: 1 });
+      producto.cantidadProducto -= 1;
+      // Actualizar stock en el backend
+      this.stockService.updateStock(this.stockDisponible).subscribe();
+      // Agregar al cesto en el servidor
+      this.stockService.addToCesto({ ...producto, cantidadProducto: 1 }).subscribe();
     }
-
-    this.guardarCestoEnLocalStorage(); // Guardar el cesto actualizado en localStorage
   }
 
-  // Método para eliminar el producto completo del cesto
   eliminarProductoCompleto(producto: Stock) {
-    const productoEnCesto = this.cesto.find(
-      (item) => item.nombreProducto === producto.nombreProducto
-    );
+    const productoEnCesto = this.cesto.find((item) => item.id === producto.id);
 
     if (productoEnCesto) {
       producto.cantidadProducto += productoEnCesto.cantidadProducto;
-
-      // Eliminar el producto del cesto
-      this.cesto = this.cesto.filter(
-        (item) => item.nombreProducto !== producto.nombreProducto
-      );
-
-      this.actualizarStock(); // Actualizar stock en tiempo real
+      // Eliminar del cesto en el backend
+      this.stockService.removeFromCesto(producto.id).subscribe(() => {
+        // Actualizar el cesto localmente
+        this.cesto = this.cesto.filter((item) => item.id !== producto.id);
+      });
+      // Actualizar stock en el backend
+      this.stockService.updateStock(this.stockDisponible).subscribe();
     }
+  }
 
-    this.guardarCestoEnLocalStorage(); // Guardar el cesto actualizado en localStorage
+  vaciarCesto() {
+    this.cesto.forEach((producto) => {
+      const productoEnStock = this.stockDisponible.find((item) => item.id === producto.id);
+      if (productoEnStock) {
+        productoEnStock.cantidadProducto += producto.cantidadProducto;
+      }
+    });
+
+    this.cesto = [];
+    // Vaciar el cesto en el servidor
+    this.stockService.removeAllFromCesto().subscribe();
+    // Actualizar el stock en el backend
+    this.stockService.updateStock(this.stockDisponible).subscribe();
   }
 
   // Método para calcular el total del cesto (considerando descuentos)
@@ -84,31 +93,5 @@ export class ComprasComponent {
         : item.precioVenta;
       return total + precioConDescuento * item.cantidadProducto;
     }, 0);
-  }
-
-  // Método para actualizar el stock con el servicio después de agregar o eliminar productos
-  actualizarStock() {
-    this.stockService.updateStock(this.stockDisponible); // Usamos el servicio para actualizar el stock
-  }
-
-  // Guardar el cesto en localStorage
-  guardarCestoEnLocalStorage() {
-    localStorage.setItem('cesto', JSON.stringify(this.cesto));
-  }
-
-  // Método para vaciar el cesto
-  vaciarCesto() {
-    this.cesto.forEach((producto) => {
-      const productoEnStock = this.stockDisponible.find(
-        (item) => item.nombreProducto === producto.nombreProducto
-      );
-      if (productoEnStock) {
-        productoEnStock.cantidadProducto += producto.cantidadProducto;
-      }
-    });
-
-    this.cesto = [];
-    this.actualizarStock(); // Actualizar el stock al vaciar el cesto
-    localStorage.removeItem('cesto');
   }
 }

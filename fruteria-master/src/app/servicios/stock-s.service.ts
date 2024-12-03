@@ -1,61 +1,54 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Stock } from '../modelos/stock';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StockSService {
+  private apiUrl = 'http://localhost:3000/stock';  // URL de json-server para stock
+  private cestoUrl = 'http://localhost:3000/cesto'; // URL para el cesto
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-  private stock: Stock[] = [
-    {
-      nombreProducto: 'Manzana',
-      tipoProducto: 'Fruta',
-      cantidadProducto: 10,
-      especificacionEntrega: 'Sin bolsa',
-      precioVenta: 5,
-      descuento: 0 // Por defecto, sin descuento
-    },
-    {
-      nombreProducto: 'Zanahoria',
-      tipoProducto: 'Verdura',
-      cantidadProducto: 5,
-      especificacionEntrega: 'Frescas',
-      precioVenta: 3,
-      descuento: 10 // 10% de descuento
-    },
-    {
-      nombreProducto: 'Pera',
-      tipoProducto: 'Fruta',
-      cantidadProducto: 5,
-      especificacionEntrega: 'Frescas',
-      precioVenta: 7,
-      descuento: 0 // Por defecto, sin descuento
-    }
-  ];
-
-  // Obtener todos los productos
-  getStock() {
-    return this.stock;
+  // Obtener todos los productos desde el JSON (API)
+  getStock(): Observable<Stock[]> {
+    return this.http.get<Stock[]>(this.apiUrl);
   }
 
-  // Añadir nuevos productos al stock
-  addStock(stock: Stock) {
-    this.stock.push(stock);
+  // Agregar un nuevo producto al stock
+  addStock(stock: Stock): Observable<Stock> {
+    return this.http.post<Stock>(this.apiUrl, stock);  // Llama a json-server para agregar el producto
   }
 
-  // Actualizar productos existentes
-  updateStock(stockActualizado: Stock[]) {
-    this.stock = stockActualizado;
+  // Actualizar los productos en el stock (PUT)
+  updateStock(stock: Stock[]): Observable<Stock[]> {
+    return this.http.put<Stock[]>(this.apiUrl, stock);  // Enviar el stock actualizado a json-server
   }
 
-  // Aplicar un descuento simple a un producto específico
-  setDescuento(nombreProducto: string, descuento: number) {
-    this.stock.forEach(producto => {
-      if (producto.nombreProducto === nombreProducto) {
-        producto.descuento = descuento;
-      }
-    });
+  // Eliminar un producto del stock
+  removeFromStock(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);  // Eliminar un producto por id
+  }
+
+  // Obtener el cesto del servidor
+  getCesto(): Observable<Stock[]> {
+    return this.http.get<Stock[]>(this.cestoUrl); // Obtener cesto desde el backend
+  }
+
+  // Añadir producto al cesto
+  addToCesto(producto: Stock): Observable<Stock> {
+    return this.http.post<Stock>(this.cestoUrl, producto); // Añadir al cesto
+  }
+
+  // Eliminar un producto del cesto
+  removeFromCesto(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.cestoUrl}/${id}`); // Eliminar del cesto
+  }
+
+  // Vaciar el cesto
+  removeAllFromCesto(): Observable<void> {
+    return this.http.delete<void>(this.cestoUrl);  // Eliminar todos los productos del cesto
   }
 }

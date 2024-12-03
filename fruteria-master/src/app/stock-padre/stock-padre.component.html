@@ -1,91 +1,62 @@
-<h1 class="text-center mb-4">Gestiona el Stock Disponible para los Clientes</h1>
+<div class="stock-padre">
+  <h2 class="text-center mb-4">Gestión de Stock</h2>
 
-<!-- Formulario para agregar productos al stock -->
-<div class="container w-50">
-  <form (ngSubmit)="crearStock()">
-    <!-- Nombre del producto -->
-    <div class="mb-3">
-      <label for="nombre" class="form-label">Nombre del Producto:</label>
-      <input
-        type="text"
-        [(ngModel)]="stock.nombreProducto"
-        class="form-control"
-        id="nombre"
-        name="nombre"
-        required
-      />
-    </div>
+  <!-- Formulario para agregar un nuevo producto -->
+  <div class="mb-4">
+    <h3>Agregar Producto al Stock</h3>
+    <form (ngSubmit)="crearStock()">
+      <div class="mb-3">
+        <label for="nombreProducto" class="form-label">Nombre del Producto</label>
+        <input type="text" id="nombreProducto" class="form-control" [(ngModel)]="stock.nombreProducto" name="nombreProducto" required />
+      </div>
 
-    <!-- Tipo de producto (Fruta/Verdura) -->
-    <div class="mb-3">
-      <label for="tipoProducto" class="form-label">Tipo de Producto (Fruta/Verdura):</label>
-      <input
-        type="text"
-        [(ngModel)]="stock.tipoProducto"
-        class="form-control"
-        id="tipoProducto"
-        name="tipoProducto"
-        required
-      />
-    </div>
+      <div class="mb-3">
+        <label for="tipoProducto" class="form-label">Tipo de Producto</label>
+        <input type="text" id="tipoProducto" class="form-control" [(ngModel)]="stock.tipoProducto" name="tipoProducto" required />
+      </div>
 
-    <!-- Cantidad de producto -->
-    <div class="mb-3">
-      <label for="cantidad" class="form-label">Cantidad:</label>
-      <input
-        type="number"
-        [(ngModel)]="stock.cantidadProducto"
-        class="form-control"
-        id="cantidad"
-        name="cantidad"
-        required
-      />
-    </div>
+      <div class="mb-3">
+        <label for="cantidadProducto" class="form-label">Cantidad Disponible</label>
+        <input type="number" id="cantidadProducto" class="form-control" [(ngModel)]="stock.cantidadProducto" name="cantidadProducto" min="1" required />
+      </div>
 
-    <!-- Especificación de entrega (Opcional) -->
-    <div class="mb-3">
-      <label for="especificacion" class="form-label">Especificación de Entrega (Opcional):</label>
-      <input
-        type="text"
-        [(ngModel)]="stock.especificacionEntrega"
-        class="form-control"
-        id="especificacion"
-        name="especificacion"
-      />
-    </div>
+      <div class="mb-3">
+        <label for="especificacionEntrega" class="form-label">Especificación de Entrega</label>
+        <input type="text" id="especificacionEntrega" class="form-control" [(ngModel)]="stock.especificacionEntrega" name="especificacionEntrega" />
+      </div>
 
-    <!-- Precio de venta -->
-    <div class="mb-3">
-      <label for="precioVenta" class="form-label">Precio de Venta Público:</label>
-      <input
-        type="number"
-        [(ngModel)]="stock.precioVenta"
-        class="form-control"
-        id="precioVenta"
-        name="precioVenta"
-      />
-    </div>
+      <div class="mb-3">
+        <label for="precioVenta" class="form-label">Precio de Venta</label>
+        <input type="number" id="precioVenta" class="form-control" [(ngModel)]="stock.precioVenta" name="precioVenta" min="0" required />
+      </div>
 
-    
+      <div class="mb-3">
+        <label for="descuento" class="form-label">Descuento (%)</label>
+        <input type="number" id="descuento" class="form-control" [(ngModel)]="stock.descuento" name="descuento" min="0" max="100" />
+      </div>
 
-    <!-- Botón para enviar el formulario -->
-    <button type="submit" class="btn btn-success w-100">Enviar Producto</button>
-  </form>
+      <button type="submit" class="btn btn-primary">Agregar Producto</button>
+    </form>
+  </div>
 
-  <!-- Mostrar lista de productos disponibles en el stock -->
-  <div class="mt-4">
-    <h4>Productos en venta</h4>
+  <!-- Listado de productos en el stock -->
+  <h3>Lista de Productos</h3>
+  <div *ngIf="listaStock.length > 0">
     <div *ngFor="let producto of listaStock" class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">{{ producto.nombreProducto }} - {{ producto.tipoProducto }}</h5>
-        <p class="card-text">Precio: <strong>{{ producto.precioVenta | currency }}</strong> | Cantidad: <strong>{{ producto.cantidadProducto }}</strong></p>
-        
-        <!-- Componente de Ofertas para aplicar descuentos -->
-        <app-ofertas 
-          [producto]="producto" 
-          (descuentoAplicado)="recibirDescuentoAplicado($event)">
-        </app-ofertas>
+        <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+        <p><strong>Tipo:</strong> {{ producto.tipoProducto }}</p>
+        <p><strong>Cantidad disponible:</strong> {{ producto.cantidadProducto }}</p>
+        <p><strong>Precio:</strong> {{ producto.precioVenta | currency }}</p>
+        <p><strong>Descuento:</strong> {{ producto.descuento }}%</p>
+        <p><strong>Especificación de entrega:</strong> {{ producto.especificacionEntrega }}</p>
+        <button class="btn btn-danger" (click)="eliminarProducto(producto.id)">Eliminar Producto</button>
       </div>
     </div>
+  </div>
+
+  <!-- Mensaje si no hay productos en stock -->
+  <div *ngIf="listaStock.length === 0" class="text-center">
+    <p>No hay productos en el stock.</p>
   </div>
 </div>

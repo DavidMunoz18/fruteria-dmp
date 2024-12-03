@@ -1,42 +1,38 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Stock } from '../modelos/stock';
-import { StockSService } from '../servicios/stock-s.service';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CommonModule } from '@angular/common';
+import { PedidoSService } from '../servicios/pedido.service';
 
 @Component({
   selector: 'app-pedido-realizado',
-  standalone: true,
-  imports: [CommonModule],
+  standalone: true, // Indica que es un componente standalone
   templateUrl: './pedido-realizado.component.html',
-  styleUrl: './pedido-realizado.component.css'
+  styleUrls: ['./pedido-realizado.component.css'],
+  imports: [FormsModule, CommonModule] // Asegúrate de incluir FormsModule
 })
-export class PedidoRealizadoComponent  {
+export class PedidoRealizadoComponent implements OnInit {
+  pedidos: any[] = []; // Lista de pedidos
+  tipoFiltro: string = ''; // Filtro seleccionado
 
-  stock: Stock[] = [];  // Tu lista de productos (puedes cargarla desde un servicio)
-  stockOriginal: Stock[] = [];  // Guarda el stock original para poder mostrarlo sin filtros
+  constructor(private pedidoService: PedidoSService) {}
 
-  constructor() {
-    // Simulación de la carga inicial del stock (puedes obtenerlo de un servicio)
-    this.stock = [
-      { nombreProducto: 'Manzana', tipoProducto: 'Fruta', cantidadProducto: 10, especificacionEntrega: 'Entrega rápida', precioVenta: 1.5 },
-      { nombreProducto: 'Lechuga', tipoProducto: 'Verdura', cantidadProducto: 20, especificacionEntrega: 'Entrega estándar', precioVenta: 0.5 },
-      { nombreProducto: 'Pera', tipoProducto: 'Fruta', cantidadProducto: 15, especificacionEntrega: 'Entrega urgente', precioVenta: 1.8 },
-      { nombreProducto: 'Tomate', tipoProducto: 'Verdura', cantidadProducto: 25, especificacionEntrega: 'Entrega normal', precioVenta: 0.7 },
-      { nombreProducto: 'Tomate', tipoProducto: 'Verdura', cantidadProducto: 25, especificacionEntrega: 'Entrega normal', precioVenta: 0.7 },
-      { nombreProducto: 'Tomate', tipoProducto: 'Verdura', cantidadProducto: 25, especificacionEntrega: 'Entrega normal', precioVenta: 0.7 },
-      { nombreProducto: 'Tomate', tipoProducto: 'Verdura', cantidadProducto: 25, especificacionEntrega: 'Entrega normal', precioVenta: 0.7 },
-      
-      { nombreProducto: 'Tomate', tipoProducto: 'Verdura', cantidadProducto: 25, especificacionEntrega: 'Entrega normal', precioVenta: 0.7 }
-    ];
-    this.stockOriginal = [...this.stock];  // Guarda el stock original para restaurar los filtros
+  ngOnInit() {
+    this.cargarPedidos(); // Cargar los pedidos al inicializar
   }
 
-  // Método para filtrar por tipo de producto
-  filtrarPorTipo(tipo: string) {
-    if (tipo) {
-      this.stock = this.stockOriginal.filter(producto => producto.tipoProducto === tipo);
+  cargarPedidos() {
+    if (this.tipoFiltro) {
+      this.pedidoService.getPedidosPorTipo(this.tipoFiltro).subscribe((data) => {
+        this.pedidos = data;
+      });
     } else {
-      this.stock = [...this.stockOriginal];  // Si no hay filtro, mostrar todo el stock
+      this.pedidoService.getPedidos().subscribe((data) => {
+        this.pedidos = data;
+      });
     }
+  }
+
+  actualizarFiltro() {
+    this.cargarPedidos();
   }
 }

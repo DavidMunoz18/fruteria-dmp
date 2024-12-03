@@ -1,22 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { StockSService } from '../servicios/stock-s.service';
 import { Stock } from '../modelos/stock';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';  // Asegúrate de importar CommonModule
-import { OfertasComponent } from '../ofertas/ofertas.component'; // Correcta importación de OfertasComponent
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-stock-padre',
   templateUrl: './stock-padre.component.html',
   styleUrls: ['./stock-padre.component.css'],
   standalone: true,
-  imports: [FormsModule, OfertasComponent, CommonModule]  // Asegúrate de importar correctamente los módulos
+  imports: [FormsModule, CommonModule]
 })
 export class StockPadreComponent {
-  stockSvc = inject(StockSService);
-
-  // Modelo de datos para el formulario
   stock: Stock = {
+    id: 0,
     nombreProducto: '',
     tipoProducto: '',
     cantidadProducto: 0,
@@ -25,27 +22,34 @@ export class StockPadreComponent {
     descuento: 0
   };
 
-  // Lista para almacenar el stock actual
   listaStock: Stock[] = [];
 
-  constructor() {
-    this.listaStock = this.stockSvc.getStock(); // Cargar la lista inicial desde el servicio
+  constructor(private stockSvc: StockSService) {
+    this.cargarStock();  // Cargar los productos desde el archivo db.json
   }
 
+  cargarStock() {
+    this.stockSvc.getStock().subscribe((data) => {
+      this.listaStock = data;
+    });
+  }
+
+  // Crear un nuevo producto en el stock
   crearStock() {
     if (this.stock.nombreProducto && this.stock.tipoProducto && this.stock.cantidadProducto > 0) {
-      this.stockSvc.addStock(this.stock); // Añadir al servicio
-      this.listaStock = this.stockSvc.getStock(); // Actualizar la lista local
-      this.resetFormulario(); // Reiniciar el formulario
-      console.log(this.listaStock); // Comprobación en consola
+      this.stockSvc.addStock(this.stock).subscribe((productoNuevo) => {
+        this.listaStock.push(productoNuevo);  // Agregar el nuevo producto
+        this.resetFormulario();
+      });
     } else {
       alert('Por favor, rellena todos los campos necesarios.');
     }
   }
 
-  // Método para reiniciar el formulario
+  // Resetear el formulario
   resetFormulario() {
     this.stock = {
+      id: 0,  // Reiniciamos el id
       nombreProducto: '',
       tipoProducto: '',
       cantidadProducto: 0,
@@ -55,13 +59,10 @@ export class StockPadreComponent {
     };
   }
 
-  recibirDescuentoAplicado(productoActualizado: Stock) {
-    // Actualiza el stock con el producto actualizado (con descuento aplicado o eliminado)
-    const index = this.listaStock.findIndex((producto) => producto.nombreProducto === productoActualizado.nombreProducto);
-    if (index !== -1) {
-      this.listaStock[index] = productoActualizado;  // Reemplaza el producto con el descuento actualizado
-      this.stockSvc.updateStock(this.listaStock);  // Actualiza el stock en el servicio
-    }
+  // Eliminar un producto del stock
+  eliminarProducto(id: number) {
+    this.stockSvc.removeFromStock(id).subscribe(() => {
+      this.listaStock = this.listaStock.filter(producto => producto.id !== id);  // Eliminar del stock
+    });
   }
-  
 }
