@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { StockSService } from '../servicios/stock-s.service';
 import { Stock } from '../modelos/stock';
+import { StockSService } from '../servicios/stock-s.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { OfertasComponent } from "../ofertas/ofertas.component";
 
 @Component({
   selector: 'app-stock-padre',
   templateUrl: './stock-padre.component.html',
   styleUrls: ['./stock-padre.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, OfertasComponent]
 })
 export class StockPadreComponent {
   stock: Stock = {
@@ -19,13 +20,13 @@ export class StockPadreComponent {
     cantidadProducto: 0,
     especificacionEntrega: '',
     precioVenta: 0,
-    descuento: 0
+    descuento: 0,
   };
 
   listaStock: Stock[] = [];
 
   constructor(private stockSvc: StockSService) {
-    this.cargarStock();  // Cargar los productos desde el archivo db.json
+    this.cargarStock();
   }
 
   cargarStock() {
@@ -34,11 +35,14 @@ export class StockPadreComponent {
     });
   }
 
-  // Crear un nuevo producto en el stock
   crearStock() {
-    if (this.stock.nombreProducto && this.stock.tipoProducto && this.stock.cantidadProducto > 0) {
+    if (
+      this.stock.nombreProducto &&
+      this.stock.tipoProducto &&
+      this.stock.cantidadProducto > 0
+    ) {
       this.stockSvc.addStock(this.stock).subscribe((productoNuevo) => {
-        this.listaStock.push(productoNuevo);  // Agregar el nuevo producto
+        this.listaStock.push(productoNuevo);
         this.resetFormulario();
       });
     } else {
@@ -46,23 +50,28 @@ export class StockPadreComponent {
     }
   }
 
-  // Resetear el formulario
   resetFormulario() {
     this.stock = {
-      id: 0,  // Reiniciamos el id
+      id: 0,
       nombreProducto: '',
       tipoProducto: '',
       cantidadProducto: 0,
       especificacionEntrega: '',
       precioVenta: 0,
-      descuento: 0
+      descuento: 0,
     };
   }
 
-  // Eliminar un producto del stock
   eliminarProducto(id: number) {
     this.stockSvc.removeFromStock(id).subscribe(() => {
-      this.listaStock = this.listaStock.filter(producto => producto.id !== id);  // Eliminar del stock
+      this.listaStock = this.listaStock.filter((producto) => producto.id !== id);
     });
+  }
+
+  actualizarProducto(productoActualizado: Stock) {
+    const index = this.listaStock.findIndex((prod) => prod.id === productoActualizado.id);
+    if (index !== -1) {
+      this.listaStock[index] = productoActualizado;
+    }
   }
 }

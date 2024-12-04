@@ -11,7 +11,8 @@ import { PedidoSService } from '../servicios/pedido.service';
   imports: [FormsModule, CommonModule] // Asegúrate de incluir FormsModule
 })
 export class PedidoRealizadoComponent implements OnInit {
-  pedidos: any[] = []; // Lista de pedidos
+  pedidos: any[] = []; // Todos los pedidos
+  pedidosFiltrados: any[] = []; // Pedidos filtrados
   tipoFiltro: string = ''; // Filtro seleccionado
 
   constructor(private pedidoService: PedidoSService) {}
@@ -21,18 +22,36 @@ export class PedidoRealizadoComponent implements OnInit {
   }
 
   cargarPedidos() {
-    if (this.tipoFiltro) {
-      this.pedidoService.getPedidosPorTipo(this.tipoFiltro).subscribe((data) => {
-        this.pedidos = data;
-      });
-    } else {
-      this.pedidoService.getPedidos().subscribe((data) => {
-        this.pedidos = data;
-      });
-    }
+    this.pedidoService.getPedidos().subscribe((data) => {
+      this.pedidos = data;
+      this.actualizarFiltro(); // Aplica el filtro inicial (todos)
+    });
   }
 
   actualizarFiltro() {
-    this.cargarPedidos();
+    if (this.tipoFiltro) {
+      // Filtra los pedidos por el tipo de producto
+      this.pedidosFiltrados = this.pedidos.filter((pedido) =>
+        pedido.productos.some((producto: any) => producto.tipoProducto === this.tipoFiltro)
+      );
+    } else {
+      this.pedidosFiltrados = [...this.pedidos]; // Muestra todos los pedidos
+    }
+  }
+
+  // Métodos para cada tipo de filtro
+  filtrarFruta() {
+    this.tipoFiltro = 'Fruta';
+    this.actualizarFiltro();
+  }
+
+  filtrarVerdura() {
+    this.tipoFiltro = 'Verdura';
+    this.actualizarFiltro();
+  }
+
+  mostrarTodos() {
+    this.tipoFiltro = '';
+    this.actualizarFiltro();
   }
 }

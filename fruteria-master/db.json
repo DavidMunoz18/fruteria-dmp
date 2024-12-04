@@ -1,129 +1,179 @@
 {
   "cesto": [
     {
-      "id": "1",
-      "nombreProducto": "Manzana",
-      "cantidadProducto": 1,
-      "precioVenta": 2.5,
-      "descuento": 10
-    },
-    {
-      "id": "2",
-      "nombreProducto": "Plátano",
-      "cantidadProducto": 1,
-      "precioVenta": 1.2,
-      "descuento": 0
-    },
-    {
-      "id": "2",
-      "nombreProducto": "Plátano",
-      "cantidadProducto": 1,
-      "precioVenta": 1.2,
-      "descuento": 0
-    },
-    {
-      "id": 0,
-      "nombreProducto": "pera",
-      "tipoProducto": "pera",
-      "cantidadProducto": 1,
-      "especificacionEntrega": "pera",
-      "precioVenta": 15,
-      "descuento": 23
-    },
-    {
       "id": 0,
       "nombreProducto": "pepe",
       "tipoProducto": "pepe",
       "cantidadProducto": 1,
-      "especificacionEntrega": "pepe",
-      "precioVenta": 15,
+      "precioVenta": 10,
+      "descuento": 0,
+      "especificacionEntrega": "e"
+    },
+    {
+      "id": 3,
+      "nombreProducto": "pepe",
+      "tipoProducto": "pepe",
+      "cantidadProducto": 1,
+      "precioVenta": 10,
+      "descuento": 0,
+      "especificacionEntrega": "e"
+    },
+    {
+      "id": 0,
+      "nombreProducto": "ti",
+      "tipoProducto": "i",
+      "cantidadProducto": 1,
+      "especificacionEntrega": "i",
+      "precioVenta": 10,
+      "descuento": 1
+    },
+    {
+      "id": 3,
+      "nombreProducto": "pepe",
+      "tipoProducto": "pepe",
+      "cantidadProducto": 1,
+      "precioVenta": 10,
+      "descuento": 0,
+      "especificacionEntrega": "e"
+    },
+    {
+      "id": "1",
+      "nombreProducto": "aa",
+      "tipoProducto": "aa",
+      "cantidadProducto": 1,
+      "especificacionEntrega": "aa",
+      "precioVenta": 20,
       "descuento": 0
+    },
+    {
+      "id": "2",
+      "nombreProducto": "e",
+      "tipoProducto": "e",
+      "cantidadProducto": 1,
+      "especificacionEntrega": "e",
+      "precioVenta": 10,
+      "descuento": 1
+    },
+    {
+      "id": 3,
+      "nombreProducto": "pepe",
+      "tipoProducto": "pepe",
+      "cantidadProducto": 1,
+      "precioVenta": 10,
+      "descuento": 0,
+      "especificacionEntrega": "e"
+    },
+    {
+      "id": 0,
+      "nombreProducto": "ti",
+      "tipoProducto": "i",
+      "cantidadProducto": 1,
+      "especificacionEntrega": "i",
+      "precioVenta": 10,
+      "descuento": 1
     }
   ],
   "stock": [
     {
-      "id": 0,
-      "nombreProducto": "pera",
-      "tipoProducto": "pera",
-      "cantidadProducto": 10,
-      "especificacionEntrega": "pera",
-      "precioVenta": 15,
-      "descuento": 23
+      "id": "1",
+      "nombreProducto": "aa",
+      "tipoProducto": "aa",
+      "cantidadProducto": 2,
+      "especificacionEntrega": "aa",
+      "precioVenta": 20,
+      "descuento": 0
+    },
+    {
+      "id": "2",
+      "nombreProducto": "e",
+      "tipoProducto": "e",
+      "cantidadProducto": 2,
+      "especificacionEntrega": "e",
+      "precioVenta": 10,
+      "descuento": 1
+    },
+    {
+      "id": 3,
+      "nombreProducto": "pepe",
+      "tipoProducto": "pepe",
+      "cantidadProducto": 4,
+      "precioVenta": 10,
+      "descuento": 0,
+      "especificacionEntrega": "e"
     },
     {
       "id": 0,
-      "nombreProducto": "pepe",
-      "tipoProducto": "pepe",
-      "cantidadProducto": 15,
-      "especificacionEntrega": "pepe",
-      "precioVenta": 15,
-      "descuento": 0
+      "nombreProducto": "ti",
+      "tipoProducto": "i",
+      "cantidadProducto": 1,
+      "especificacionEntrega": "i",
+      "precioVenta": 10,
+      "descuento": 1
     }
   ],
-
-    "pedidos": [
-      {
-        "id": 1,
-        "nombreDistribuidor": "Distribuidor A",
-        "fechaPedido": "2024-12-01",
-        "productos": [
-          {
-            "nombreProducto": "Manzana",
-            "tipoProducto": "Fruta",
-            "cantidadProducto": 50,
-            "especificacionEntrega": "Entrega rápida",
-            "precioVenta": 1.5
-          },
-          {
-            "nombreProducto": "Pera",
-            "tipoProducto": "Fruta",
-            "cantidadProducto": 30,
-            "especificacionEntrega": "Entrega urgente",
-            "precioVenta": 1.8
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "nombreDistribuidor": "Distribuidor B",
-        "fechaPedido": "2024-12-02",
-        "productos": [
-          {
-            "nombreProducto": "Lechuga",
-            "tipoProducto": "Verdura",
-            "cantidadProducto": 100,
-            "especificacionEntrega": "Entrega estándar",
-            "precioVenta": 0.5
-          },
-          {
-            "nombreProducto": "Tomate",
-            "tipoProducto": "Verdura",
-            "cantidadProducto": 75,
-            "especificacionEntrega": "Entrega normal",
-            "precioVenta": 0.7
-          }
-        ]
-      },
-      {
-        "id": 3,
-        "nombreDistribuidor": "Distribuidor C",
-        "fechaPedido": "2024-12-03",
-        "productos": [
-          {
-            "nombreProducto": "Plátano",
-            "tipoProducto": "Fruta",
-            "cantidadProducto": 40,
-            "especificacionEntrega": "Entrega rápida",
-            "precioVenta": 1.2
-          },
-          {
-            "nombreProducto": "Pepino",
-            "tipoProducto": "Verdura",
-            "cantidadProducto": 60,
-            "especificacionEntrega": "Entrega urgente",
-            "precioVenta": 0.6
-          }
-        ]
-      }
-    ]
-  }
+  "pedidos": [
+    {
+      "id": "1",
+      "nombreDistribuidor": "Distribuidor A",
+      "fechaPedido": "2024-12-01",
+      "productos": [
+        {
+          "nombreProducto": "Manzana",
+          "tipoProducto": "Fruta",
+          "cantidadProducto": 50,
+          "especificacionEntrega": "Entrega rápida",
+          "precioVenta": 1.5
+        },
+        {
+          "nombreProducto": "Pera",
+          "tipoProducto": "Fruta",
+          "cantidadProducto": 30,
+          "especificacionEntrega": "Entrega urgente",
+          "precioVenta": 1.8
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nombreDistribuidor": "Distribuidor B",
+      "fechaPedido": "2024-12-02",
+      "productos": [
+        {
+          "nombreProducto": "Lechuga",
+          "tipoProducto": "Verdura",
+          "cantidadProducto": 100,
+          "especificacionEntrega": "Entrega estándar",
+          "precioVenta": 0.5
+        },
+        {
+          "nombreProducto": "Tomate",
+          "tipoProducto": "Verdura",
+          "cantidadProducto": 75,
+          "especificacionEntrega": "Entrega normal",
+          "precioVenta": 0.7
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nombreDistribuidor": "Distribuidor C",
+      "fechaPedido": "2024-12-03",
+      "productos": [
+        {
+          "nombreProducto": "Plátano",
+          "tipoProducto": "Fruta",
+          "cantidadProducto": 40,
+          "especificacionEntrega": "Entrega rápida",
+          "precioVenta": 1.2
+        },
+        {
+          "nombreProducto": "Pepino",
+          "tipoProducto": "Verdura",
+          "cantidadProducto": 60,
+          "especificacionEntrega": "Entrega urgente",
+          "precioVenta": 0.6
+        }
+      ]
+    }
+  ]
+}

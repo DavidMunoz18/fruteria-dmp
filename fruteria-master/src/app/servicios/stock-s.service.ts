@@ -7,48 +7,46 @@ import { Stock } from '../modelos/stock';
   providedIn: 'root'
 })
 export class StockSService {
-  private apiUrl = 'http://localhost:3000/stock';  // URL de json-server para stock
-  private cestoUrl = 'http://localhost:3000/cesto'; // URL para el cesto
+  private apiUrlStock = 'http://localhost:3000/stock';  // URL de json-server para stock
+  private apiUrlCesto = 'http://localhost:3000/cesto'; // URL para el cesto
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todos los productos desde el JSON (API)
+  // Métodos para manejar el stock
   getStock(): Observable<Stock[]> {
-    return this.http.get<Stock[]>(this.apiUrl);
+    return this.http.get<Stock[]>(this.apiUrlStock); // Obtener todo el stock
   }
 
-  // Agregar un nuevo producto al stock
   addStock(stock: Stock): Observable<Stock> {
-    return this.http.post<Stock>(this.apiUrl, stock);  // Llama a json-server para agregar el producto
+    return this.http.post<Stock>(this.apiUrlStock, stock); // Agregar nuevo producto al stock
   }
 
-  // Actualizar los productos en el stock (PUT)
-  updateStock(stock: Stock[]): Observable<Stock[]> {
-    return this.http.put<Stock[]>(this.apiUrl, stock);  // Enviar el stock actualizado a json-server
+  updateStock(producto: Stock): Observable<Stock> {
+    return this.http.put<Stock>(`${this.apiUrlStock}/${producto.id}`, producto); // Actualizar un producto específico
   }
 
-  // Eliminar un producto del stock
   removeFromStock(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);  // Eliminar un producto por id
+    return this.http.delete<void>(`${this.apiUrlStock}/${id}`); // Eliminar un producto del stock
   }
 
-  // Obtener el cesto del servidor
+  // Métodos para manejar el cesto
   getCesto(): Observable<Stock[]> {
-    return this.http.get<Stock[]>(this.cestoUrl); // Obtener cesto desde el backend
+    return this.http.get<Stock[]>(this.apiUrlCesto); // Obtener todos los productos del cesto
   }
 
-  // Añadir producto al cesto
   addToCesto(producto: Stock): Observable<Stock> {
-    return this.http.post<Stock>(this.cestoUrl, producto); // Añadir al cesto
+    return this.http.post<Stock>(this.apiUrlCesto, producto); // Añadir producto al cesto
   }
 
-  // Eliminar un producto del cesto
+  updateCesto(producto: Stock): Observable<Stock> {
+    return this.http.put<Stock>(`${this.apiUrlCesto}/${producto.id}`, producto); // Actualizar un producto en el cesto
+  }
+
   removeFromCesto(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.cestoUrl}/${id}`); // Eliminar del cesto
+    return this.http.delete<void>(`${this.apiUrlCesto}/${id}`); // Eliminar producto del cesto
   }
 
-  // Vaciar el cesto
   removeAllFromCesto(): Observable<void> {
-    return this.http.delete<void>(this.cestoUrl);  // Eliminar todos los productos del cesto
+    return this.http.delete<void>(this.apiUrlCesto); // Vaciar todo el cesto
   }
 }

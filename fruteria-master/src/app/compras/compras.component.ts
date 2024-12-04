@@ -6,86 +6,84 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-compras',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './compras.component.html',
-  styleUrls: ['./compras.component.css']
+  styleUrls: ['./compras.component.css'],
+  imports: [CommonModule]
 })
 export class ComprasComponent implements OnInit {
-  stockDisponible: Stock[] = [];
-  cesto: Stock[] = [];
+  stockDisponible: Stock[] = [];  // Lista de productos disponibles
+  cesto: Stock[] = [];            // Lista de productos en el cesto
 
   constructor(private stockService: StockSService) {}
 
   ngOnInit() {
-    // Obtener el stock desde el servidor (json-server)
+    // Obtener los productos disponibles desde el stock
     this.stockService.getStock().subscribe((data) => {
       this.stockDisponible = data;
     });
 
-    // Obtener el cesto desde el servidor (json-server)
+    // Obtener los productos del cesto
     this.stockService.getCesto().subscribe((data) => {
       this.cesto = data;
     });
   }
 
   compraProducto(producto: Stock) {
-    if (producto.cantidadProducto <= 0) {
-      alert('No hay más unidades disponibles.');
-      return;
-    }
-
     const productoEnCesto = this.cesto.find((item) => item.id === producto.id);
-
+  
     if (productoEnCesto) {
+      // Si el producto ya está en el cesto, solo aumentar la cantidad
       if (productoEnCesto.cantidadProducto < producto.cantidadProducto) {
         productoEnCesto.cantidadProducto += 1;
-        producto.cantidadProducto -= 1;
-        // Actualizar stock en el backend
-        this.stockService.updateStock(this.stockDisponible).subscribe();
+        
+        // Actualizar el cesto en el servidor
+        this.stockService.updateCesto(productoEnCesto).subscribe(() => {
+          console.log('Cantidad del producto actualizada en el cesto');
+        });
       } else {
-        alert('No hay suficientes unidades disponibles.');
+        alert('No puedes añadir más unidades que las disponibles en el stock.');
       }
     } else {
-      this.cesto.push({ ...producto, cantidadProducto: 1 });
-      producto.cantidadProducto -= 1;
-      // Actualizar stock en el backend
-      this.stockService.updateStock(this.stockDisponible).subscribe();
-      // Agregar al cesto en el servidor
-      this.stockService.addToCesto({ ...producto, cantidadProducto: 1 }).subscribe();
-    }
-  }
-
-  eliminarProductoCompleto(producto: Stock) {
-    const productoEnCesto = this.cesto.find((item) => item.id === producto.id);
-
-    if (productoEnCesto) {
-      producto.cantidadProducto += productoEnCesto.cantidadProducto;
-      // Eliminar del cesto en el backend
-      this.stockService.removeFromCesto(producto.id).subscribe(() => {
-        // Actualizar el cesto localmente
-        this.cesto = this.cesto.filter((item) => item.id !== producto.id);
-      });
-      // Actualizar stock en el backend
-      this.stockService.updateStock(this.stockDisponible).subscribe();
-    }
-  }
-
-  vaciarCesto() {
-    this.cesto.forEach((producto) => {
-      const productoEnStock = this.stockDisponible.find((item) => item.id === producto.id);
-      if (productoEnStock) {
-        productoEnStock.cantidadProducto += producto.cantidadProducto;
+      // Si no está en el cesto, se agrega con cantidad 1
+      if (producto.cantidadProducto > 0) {
+        const nuevoProducto = { ...producto, cantidadProducto: 1 };
+  
+        // Enviar al servidor
+        this.stockService.addToCesto(nuevoProducto).subscribe(() => {
+          console.log('Producto añadido al cesto');
+        });
+  
+        // Añadir al cesto localmente
+        this.cesto.push(nuevoProducto);
+      } else {
+        alert('No hay suficiente stock para añadir este producto al cesto.');
       }
-    });
+    }
+  }
+  // Método para eliminar un producto del cesto y del servidor
+  eliminarProductoCompleto(producto: Stock) {
+    // Eliminar del cesto local
+    this.cesto = this.cesto.filter((item) => item.id !== producto.id);
 
-    this.cesto = [];
-    // Vaciar el cesto en el servidor
-    this.stockService.removeAllFromCesto().subscribe();
-    // Actualizar el stock en el backend
-    this.stockService.updateStock(this.stockDisponible).subscribe();
+    // Eliminar del cesto en el servidor
+    this.stockService.removeFromCesto(producto.id).subscribe(() => {
+      console.log('Producto eliminado del cesto');
+    });
   }
 
-  // Método para calcular el total del cesto (considerando descuentos)
+  // Método para vaciar el cesto (eliminar todos los productos del cesto)
+ vaciarCesto() {
+  // Eliminar todos los productos del cesto en el servidor
+  this.stockService.removeAllFromCesto().subscribe(() => {
+    console.log('Cesto vacío en el servidor');
+    
+    // Luego vaciamos el cesto localmente
+    this.cesto = [];
+  });
+}
+
+
+  // Método para calcular el total del cesto
   getTotal(): number {
     return this.cesto.reduce((total, item) => {
       const precioConDescuento = item.descuento

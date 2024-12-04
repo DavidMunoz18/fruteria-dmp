@@ -1,0 +1,42 @@
+.pedidos-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .pedido {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  
+  .pedido h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .pedido p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .list-group-item {
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  button {
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  

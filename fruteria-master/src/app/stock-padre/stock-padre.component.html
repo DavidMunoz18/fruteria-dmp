@@ -1,4 +1,4 @@
-<div class="stock-padre">
+<div class="stock-padre container my-4">
   <h2 class="text-center mb-4">Gestión de Stock</h2>
 
   <!-- Formulario para agregar un nuevo producto -->
@@ -7,32 +7,76 @@
     <form (ngSubmit)="crearStock()">
       <div class="mb-3">
         <label for="nombreProducto" class="form-label">Nombre del Producto</label>
-        <input type="text" id="nombreProducto" class="form-control" [(ngModel)]="stock.nombreProducto" name="nombreProducto" required />
+        <input
+          type="text"
+          id="nombreProducto"
+          class="form-control"
+          [(ngModel)]="stock.nombreProducto"
+          name="nombreProducto"
+          required
+        />
       </div>
 
       <div class="mb-3">
         <label for="tipoProducto" class="form-label">Tipo de Producto</label>
-        <input type="text" id="tipoProducto" class="form-control" [(ngModel)]="stock.tipoProducto" name="tipoProducto" required />
+        <input
+          type="text"
+          id="tipoProducto"
+          class="form-control"
+          [(ngModel)]="stock.tipoProducto"
+          name="tipoProducto"
+          required
+        />
       </div>
 
       <div class="mb-3">
         <label for="cantidadProducto" class="form-label">Cantidad Disponible</label>
-        <input type="number" id="cantidadProducto" class="form-control" [(ngModel)]="stock.cantidadProducto" name="cantidadProducto" min="1" required />
+        <input
+          type="number"
+          id="cantidadProducto"
+          class="form-control"
+          [(ngModel)]="stock.cantidadProducto"
+          name="cantidadProducto"
+          min="1"
+          required
+        />
       </div>
 
       <div class="mb-3">
         <label for="especificacionEntrega" class="form-label">Especificación de Entrega</label>
-        <input type="text" id="especificacionEntrega" class="form-control" [(ngModel)]="stock.especificacionEntrega" name="especificacionEntrega" />
+        <input
+          type="text"
+          id="especificacionEntrega"
+          class="form-control"
+          [(ngModel)]="stock.especificacionEntrega"
+          name="especificacionEntrega"
+        />
       </div>
 
       <div class="mb-3">
         <label for="precioVenta" class="form-label">Precio de Venta</label>
-        <input type="number" id="precioVenta" class="form-control" [(ngModel)]="stock.precioVenta" name="precioVenta" min="0" required />
+        <input
+          type="number"
+          id="precioVenta"
+          class="form-control"
+          [(ngModel)]="stock.precioVenta"
+          name="precioVenta"
+          min="0"
+          required
+        />
       </div>
 
       <div class="mb-3">
         <label for="descuento" class="form-label">Descuento (%)</label>
-        <input type="number" id="descuento" class="form-control" [(ngModel)]="stock.descuento" name="descuento" min="0" max="100" />
+        <input
+          type="number"
+          id="descuento"
+          class="form-control"
+          [(ngModel)]="stock.descuento"
+          name="descuento"
+          min="0"
+          max="100"
+        />
       </div>
 
       <button type="submit" class="btn btn-primary">Agregar Producto</button>
@@ -47,10 +91,19 @@
         <h5 class="card-title">{{ producto.nombreProducto }}</h5>
         <p><strong>Tipo:</strong> {{ producto.tipoProducto }}</p>
         <p><strong>Cantidad disponible:</strong> {{ producto.cantidadProducto }}</p>
-        <p><strong>Precio:</strong> {{ producto.precioVenta | currency }}</p>
+        <p><strong>Precio:</strong> {{ producto.precioVenta }} €</p>
         <p><strong>Descuento:</strong> {{ producto.descuento }}%</p>
         <p><strong>Especificación de entrega:</strong> {{ producto.especificacionEntrega }}</p>
-        <button class="btn btn-danger" (click)="eliminarProducto(producto.id)">Eliminar Producto</button>
+
+        <!-- Componente hijo para aplicar ofertas -->
+        <app-ofertas
+          [producto]="producto"
+          (descuentoAplicado)="actualizarProducto($event)"
+        ></app-ofertas>
+
+        <button class="btn btn-danger mt-2" (click)="eliminarProducto(producto.id)">
+          Eliminar Producto
+        </button>
       </div>
     </div>
   </div>
