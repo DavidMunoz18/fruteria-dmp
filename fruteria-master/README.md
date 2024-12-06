@@ -1,27 +1,173 @@
-# FruteriaDavidMunozPolanco
+# **Proyecto de Gestión de Inventarios y Compras**
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.10.
+Este proyecto es una aplicación web desarrollada en Angular que permite la gestión de productos, usuarios, compras y pedidos. La aplicación está diseñada con un sistema de autenticación que diferencia entre administradores y usuarios, habilitando diferentes funcionalidades según el tipo de usuario que inicie sesión.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## **Índice**
+1. [Características Generales](#características-generales)
+2. [Requisitos Previos](#requisitos-previos)
+3. [Instalación](#instalación)
+4. [Estructura del Proyecto](#estructura-del-proyecto)
+5. [Rutas y Funcionalidades](#rutas-y-funcionalidades)
+6. [Descripción de Componentes](#descripción-de-componentes)
+7. [Servicios](#servicios)
+8. [Contribución](#contribución)
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## **Características Generales**
+- **Sistema de login**: Autenticación de usuarios con distinción entre *admin* y *usuario*.
+- **Gestión de inventarios**: Los administradores pueden agregar, editar o eliminar productos del stock.
+- **Carrito de compras**: Los usuarios pueden agregar productos al carrito y gestionarlos.
+- **Pedidos realizados**: Un sistema ficticio que muestra al administrador los pedidos que tiene en proceso para prever el stock futuro.
+- **Gestión de usuarios**: Visualización de los usuarios conectados por el administrador.
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## **Requisitos Previos**
+Para ejecutar este proyecto necesitarás:
+- Node.js (v14+)
+- Angular CLI (v12+)
+- Un servidor de JSON (por ejemplo, `json-server` para datos ficticios)
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## **Instalación**
+1. Clona este repositorio:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Inicia el servidor de datos JSON (reemplaza `<ruta_a_db.json>` con tu archivo JSON):
+   ```bash
+   npx json-server --watch <ruta_a_db.json> (si no pones nada es a localhost) --port 3000
+   ```
+4. Ejecuta la aplicación Angular:
+   ```bash
+   ng serve
+   ```
+5. Accede a la aplicación en `http://localhost:4200`.
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## **Estructura del Proyecto**
+- **Modelos**: Estructuras que definen los datos utilizados en la aplicación (`Stock`, `Usuario`, etc.).
+- **Servicios**: Clases que gestionan la comunicación con la API REST para cada entidad (usuarios, stock, pedidos).
+- **Componentes**:
+  - `app.component`: Componente principal que contiene el sistema de navegación.
+  - `stock-padre`: Gestión de inventario por parte del administrador.
+  - `compras`: Gestión de carrito de compras por los usuarios.
+  - `pedido-realizado`: Visualización de pedidos ficticios para el administrador.
+  - `usuarios`: Gestión de usuarios conectados.
+  - `ofertas`: Sección que destaca productos específicos.
 
-## Further help
+---
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## **Rutas y Funcionalidades**
+
+### **Login**
+- **Ruta**: `/login`
+- **Función**: Permite a los usuarios iniciar sesión como *admin* o *usuario*. Dependiendo del rol, se redirige a distintas vistas.
+
+### **Dashboard de Admin**
+- **Ruta**: `/admin`
+- **Función**: 
+  - Gestionar inventarios (Componente `stock-padre`).
+  - Visualizar pedidos realizados (Componente `pedido-realizado`).
+  - Gestionar usuarios conectados (Componente `usuarios`).
+
+### **Dashboard de Usuario**
+- **Ruta**: `/compras`
+- **Función**: 
+  - Navegar por los productos disponibles.
+  - Añadir productos al carrito.
+  - Gestionar el carrito de compras.
+
+---
+
+## **Descripción de Componentes**
+
+### **1. StockPadreComponent**
+- **Rol**: Exclusivo para *admin*.
+- **Funcionalidad**:
+  - Añadir productos al stock.
+  - Eliminar productos existentes.
+  - Visualizar el inventario actual.
+- **Detalles**: Los productos añadidos se guardan en el archivo JSON del servidor en la colección `stock`.
+
+### **2. ComprasComponent**
+- **Rol**: Exclusivo para *usuarios*.
+- **Funcionalidad**:
+  - Visualizar productos disponibles (provenientes del stock).
+  - Añadir productos al carrito de compras.
+  - Gestionar el carrito (modificar cantidades, eliminar productos).
+  - Restricción: No se pueden añadir más productos al carrito de los que están disponibles en el stock.
+
+### **3. PedidoRealizadoComponent**
+- **Rol**: Exclusivo para *admin*.
+- **Funcionalidad**:
+  - Mostrar una lista de pedidos ficticios.
+  - Permitir al administrador visualizar qué productos llegarán en un futuro para la planificación del stock.
+
+### **4. UsuariosComponent**
+- **Rol**: Exclusivo para *admin*.
+- **Funcionalidad**:
+  - Mostrar una lista de usuarios conectados al sistema.
+  - Funcionalidad básica de visualización.
+
+### **5. OfertasComponent**
+- **Rol**: Accesible solo para el admin.
+- **Funcionalidad**:
+  - Destacar ciertos productos con descuento.
+  - Información adicional sobre promociones.
+  - Añadir nuevos descuentos, que el usuario podrá ver.
+
+---
+
+## **Servicios**
+
+### **1. StockSService**
+- **Función**: Gestiona la comunicación con la API para la colección `stock`.
+- **Métodos**:
+  - `getStock`: Obtener todos los productos.
+  - `addStock`: Añadir un nuevo producto.
+  - `removeFromStock`: Eliminar un producto por su ID.
+
+### **2. PedidoSService**
+- **Función**: Gestiona los datos ficticios de pedidos realizados.
+- **Métodos**:
+  - `getPedidos`: Obtener todos los pedidos.
+  - `getPedidosPorTipo`: Filtrar pedidos por tipo (frutas o verduras).
+
+### **3. UsuarioSService**
+- **Función**: Gestiona la autenticación y datos de los usuarios.
+- **Métodos**:
+  - `login`: Autenticar usuarios.
+  - `getUsuarios`: Obtener la lista de usuarios conectados.
+
+---
+
+## **Contribución**
+1. Realiza un *fork* del proyecto.
+2. Crea una rama para tu funcionalidad o corrección: 
+   ```bash
+   git checkout -b nueva-funcionalidad
+   ```
+3. Realiza tus cambios y haz *commit*:
+   ```bash
+   git commit -m "Añade nueva funcionalidad"
+   ```
+4. Envía tus cambios:
+   ```bash
+   git push origin nueva-funcionalidad
+   ```
+5. Abre un *pull request* y describe tus cambios.
+
+---
+
+## **Notas Finales**
+Este proyecto está diseñado como una aplicación de ejemplo para gestionar inventarios y compras. Puede ser extendido para integrarse con sistemas más robustos o adaptarse a necesidades específicas.

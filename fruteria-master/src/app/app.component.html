@@ -1,5 +1,5 @@
 <!-- Vista cuando no está logueado -->
-<div *ngIf="!isLoggedIn; else loggedInTemplate" class="container mt-5">
+<div *ngIf="!estaLogeado; else loggedInTemplate" class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
       <div class="card shadow-lg p-4">
@@ -24,7 +24,7 @@
             <input
               type="password"
               id="password"
-              [(ngModel)]="password"
+              [(ngModel)]="contrasenia"
               name="password"
               class="form-control"
               required
@@ -47,13 +47,13 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
           <!-- Opciones solo visibles para admin -->
-          <li *ngIf="role === 'admin'" class="nav-item">
+          <li *ngIf="rol === 'admin'" class="nav-item">
             <a [routerLink]="['/stock']" routerLinkActive="active" class="nav-link">Stock</a>
           </li>
-          <li *ngIf="role === 'admin'" class="nav-item">
+          <li *ngIf="rol === 'admin'" class="nav-item">
             <a [routerLink]="['/pedido']" routerLinkActive="active" class="nav-link">Pedido Realizado</a>
           </li>
-          <li *ngIf="role === 'admin'" class="nav-item">
+          <li *ngIf="rol === 'admin'" class="nav-item">
             <a [routerLink]="['/usuarios']" routerLinkActive="active" class="nav-link">Usuarios Conectados</a>
           </li>
           <!-- Opciones visibles para todos -->
@@ -62,7 +62,7 @@
           </li>
         </ul>
         <!-- Botón de Cerrar sesión -->
-        <button class="btn btn-danger ms-auto" (click)="logout()">Cerrar Sesión</button>
+        <button class="btn btn-danger ms-auto" (click)="cerrarS()">Cerrar Sesión</button>
       </div>
     </div>
   </nav>

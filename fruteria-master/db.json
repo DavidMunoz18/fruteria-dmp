@@ -1,114 +1,33 @@
 {
   "cesto": [
     {
-      "id": 0,
-      "nombreProducto": "pepe",
-      "tipoProducto": "pepe",
+      "id": 1733497388529,
+      "nombreProducto": "Manzana",
+      "tipoProducto": "Fruta",
       "cantidadProducto": 1,
-      "precioVenta": 10,
-      "descuento": 0,
-      "especificacionEntrega": "e"
-    },
-    {
-      "id": 3,
-      "nombreProducto": "pepe",
-      "tipoProducto": "pepe",
-      "cantidadProducto": 1,
-      "precioVenta": 10,
-      "descuento": 0,
-      "especificacionEntrega": "e"
-    },
-    {
-      "id": 0,
-      "nombreProducto": "ti",
-      "tipoProducto": "i",
-      "cantidadProducto": 1,
-      "especificacionEntrega": "i",
-      "precioVenta": 10,
-      "descuento": 1
-    },
-    {
-      "id": 3,
-      "nombreProducto": "pepe",
-      "tipoProducto": "pepe",
-      "cantidadProducto": 1,
-      "precioVenta": 10,
-      "descuento": 0,
-      "especificacionEntrega": "e"
-    },
-    {
-      "id": "1",
-      "nombreProducto": "aa",
-      "tipoProducto": "aa",
-      "cantidadProducto": 1,
-      "especificacionEntrega": "aa",
-      "precioVenta": 20,
-      "descuento": 0
-    },
-    {
-      "id": "2",
-      "nombreProducto": "e",
-      "tipoProducto": "e",
-      "cantidadProducto": 1,
-      "especificacionEntrega": "e",
-      "precioVenta": 10,
-      "descuento": 1
-    },
-    {
-      "id": 3,
-      "nombreProducto": "pepe",
-      "tipoProducto": "pepe",
-      "cantidadProducto": 1,
-      "precioVenta": 10,
-      "descuento": 0,
-      "especificacionEntrega": "e"
-    },
-    {
-      "id": 0,
-      "nombreProducto": "ti",
-      "tipoProducto": "i",
-      "cantidadProducto": 1,
-      "especificacionEntrega": "i",
-      "precioVenta": 10,
-      "descuento": 1
+      "especificacionEntrega": "verdes",
+      "precioVenta": 5,
+      "descuento": 10
     }
   ],
   "stock": [
     {
-      "id": "1",
-      "nombreProducto": "aa",
-      "tipoProducto": "aa",
-      "cantidadProducto": 2,
-      "especificacionEntrega": "aa",
-      "precioVenta": 20,
-      "descuento": 0
+      "id": "1733497186500",
+      "nombreProducto": "Naranja",
+      "tipoProducto": "Fruta",
+      "cantidadProducto": 5,
+      "especificacionEntrega": "verdes",
+      "precioVenta": 10,
+      "descuento": 25
     },
     {
-      "id": "2",
-      "nombreProducto": "e",
-      "tipoProducto": "e",
-      "cantidadProducto": 2,
-      "especificacionEntrega": "e",
-      "precioVenta": 10,
-      "descuento": 1
-    },
-    {
-      "id": 3,
-      "nombreProducto": "pepe",
-      "tipoProducto": "pepe",
-      "cantidadProducto": 4,
-      "precioVenta": 10,
-      "descuento": 0,
-      "especificacionEntrega": "e"
-    },
-    {
-      "id": 0,
-      "nombreProducto": "ti",
-      "tipoProducto": "i",
-      "cantidadProducto": 1,
-      "especificacionEntrega": "i",
-      "precioVenta": 10,
-      "descuento": 1
+      "id": "1733497388529",
+      "nombreProducto": "Manzana",
+      "tipoProducto": "Fruta",
+      "cantidadProducto": 5,
+      "especificacionEntrega": "verdes",
+      "precioVenta": 5,
+      "descuento": 10
     }
   ],
   "pedidos": [
