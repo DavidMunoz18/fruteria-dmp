@@ -72,7 +72,7 @@ Para ejecutar este proyecto necesitarás:
 - **Función**: Permite a los usuarios iniciar sesión como *admin* o *usuario*. Dependiendo del rol, se redirige a distintas vistas.
 
 ### **Dashboard de Admin**
-- **Ruta**: `/stock`, `/usuarios`, `/pedido 
+- **Ruta**: `/stock`, `/usuarios`, `/pedido`
 - **Función**: 
   - Gestionar inventarios (Componente `stock-padre`).
   - Visualizar pedidos realizados (Componente `pedido-realizado`).
