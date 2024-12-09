@@ -12,8 +12,6 @@ Este proyecto es una aplicación web desarrollada en Angular que permite la gest
 5. [Rutas y Funcionalidades](#rutas-y-funcionalidades)
 6. [Descripción de Componentes](#descripción-de-componentes)
 7. [Servicios](#servicios)
-8. [Contribución](#contribución)
-
 ---
 
 ## **Características Generales**
@@ -55,7 +53,7 @@ Para ejecutar este proyecto necesitarás:
 ---
 
 ## **Estructura del Proyecto**
-- **Modelos**: Estructuras que definen los datos utilizados en la aplicación (`Stock`, `Usuario`, etc.).
+- **Modelos**: Estructuras que definen los datos utilizados en la aplicación (`Stock`).
 - **Servicios**: Clases que gestionan la comunicación con la API REST para cada entidad (usuarios, stock, pedidos).
 - **Componentes**:
   - `app.component`: Componente principal que contiene el sistema de navegación.
@@ -74,7 +72,7 @@ Para ejecutar este proyecto necesitarás:
 - **Función**: Permite a los usuarios iniciar sesión como *admin* o *usuario*. Dependiendo del rol, se redirige a distintas vistas.
 
 ### **Dashboard de Admin**
-- **Ruta**: `/admin`
+- **Ruta**: `/stock`, `/usuarios`, `/pedido 
 - **Función**: 
   - Gestionar inventarios (Componente `stock-padre`).
   - Visualizar pedidos realizados (Componente `pedido-realizado`).
@@ -120,7 +118,7 @@ Para ejecutar este proyecto necesitarás:
   - Funcionalidad básica de visualización.
 
 ### **5. OfertasComponent**
-- **Rol**: Accesible solo para el admin.
+- **Rol**: Accesible solo para el *admin*.
 - **Funcionalidad**:
   - Destacar ciertos productos con descuento.
   - Información adicional sobre promociones.
@@ -148,24 +146,6 @@ Para ejecutar este proyecto necesitarás:
 - **Métodos**:
   - `login`: Autenticar usuarios.
   - `getUsuarios`: Obtener la lista de usuarios conectados.
-
----
-
-## **Contribución**
-1. Realiza un *fork* del proyecto.
-2. Crea una rama para tu funcionalidad o corrección: 
-   ```bash
-   git checkout -b nueva-funcionalidad
-   ```
-3. Realiza tus cambios y haz *commit*:
-   ```bash
-   git commit -m "Añade nueva funcionalidad"
-   ```
-4. Envía tus cambios:
-   ```bash
-   git push origin nueva-funcionalidad
-   ```
-5. Abre un *pull request* y describe tus cambios.
 
 ---
 
