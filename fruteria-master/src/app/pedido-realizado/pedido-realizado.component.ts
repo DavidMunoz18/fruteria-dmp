@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { PedidoSService } from '../servicios/pedido.service';
 
 @Component({
   selector: 'app-pedido-realizado',
-  standalone: true, // Indica que es un componente standalone
+  standalone: true, 
   templateUrl: './pedido-realizado.component.html',
   styleUrls: ['./pedido-realizado.component.css'],
-  imports: [FormsModule, CommonModule] // Asegúrate de incluir FormsModule
+  imports: [FormsModule, CommonModule] 
 })
 export class PedidoRealizadoComponent implements OnInit {
   pedidos: any[] = []; // Todos los pedidos
