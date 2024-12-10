@@ -8,7 +8,7 @@ import { routes } from './app/app.routes';
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(),
-    provideRouter(routes)  // Asegúrate de que las rutas estén incluidas
+    provideRouter(routes)  
   ]
 });
 
